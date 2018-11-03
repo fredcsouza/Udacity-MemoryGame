@@ -28,8 +28,10 @@ function shuffle(array) {
 
 // embaralhando cartões e adicionando ao html.
 function shuffleCards() {
-    shuffle(cards.find(i));
-    $('.deck').html(cards);
+    let simbol = shuffle(cards.find('i'));
+    cards.each(function(index) {
+        $(this).html(simbol[index]);
+    });
 }
 
 shuffleCards();
