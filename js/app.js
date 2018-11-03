@@ -1,7 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
-let card = $('.card');
+let cards = $('.card');
 
 
  /*
@@ -45,3 +45,28 @@ shuffleCards();
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+
+// array contendo cards selecionados
+let selectedCards = [];
+
+// tratando evento de click
+cards.click(function (){
+    if($(this).hasClass('open') == false) {
+        if($(this).hasClass('match') == false) {
+            $(this).toggleClass('open show');
+            selectedCards.push($(this));
+        
+            if(selectedCards.length == 2){
+                if(selectedCards[0].children().attr('class') == selectedCards[1].children().attr('class')){
+                    selectedCards[0].toggleClass('open show match');
+                    selectedCards[1].toggleClass('open show match');
+                }else {
+                    selectedCards[0].toggleClass('open show');
+                    selectedCards[1].toggleClass('open show');
+                }
+                selectedCards = [];
+            }
+        }
+    }
+});
