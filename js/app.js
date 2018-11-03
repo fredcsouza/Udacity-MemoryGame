@@ -4,12 +4,12 @@
 let cards = $('.card');
 
 
- /*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+/*
+* Display the cards on the page
+*   - shuffle the list of cards using the provided "shuffle" method below
+*   - loop through each card and create its HTML
+*   - add each card's HTML to the page
+*/
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -28,7 +28,7 @@ function shuffle(array) {
 
 // embaralhando cartões e adicionando ao html.
 function shuffleCards() {
-    shuffle(cards);
+    shuffle(cards.find(i));
     $('.deck').html(cards);
 }
 
@@ -47,26 +47,54 @@ shuffleCards();
  */
 
 
-// array contendo cards selecionados
+
 let selectedCards = [];
+let moves = 0;
+let acertos = 0;
 
 // tratando evento de click
-cards.click(function (){
-    if($(this).hasClass('open') == false) {
-        if($(this).hasClass('match') == false) {
+cards.click(function () {
+    if ($(this).hasClass('open') == false) {
+        if ($(this).hasClass('match') == false) {
             $(this).toggleClass('open show');
             selectedCards.push($(this));
-        
-            if(selectedCards.length == 2){
-                if(selectedCards[0].children().attr('class') == selectedCards[1].children().attr('class')){
+
+            if (selectedCards.length == 2) {
+                if (selectedCards[0].children().attr('class') == selectedCards[1].children().attr('class')) {
                     selectedCards[0].toggleClass('open show match');
                     selectedCards[1].toggleClass('open show match');
-                }else {
+                    acertos++;
+                } else {
                     selectedCards[0].toggleClass('open show');
                     selectedCards[1].toggleClass('open show');
                 }
+                moves++;
+                $('.moves').text(moves);
                 selectedCards = [];
+                if (acertos == 8) {
+                    $('.score-final').text("With " + moves + " Moves and 1 Star");
+                    $('#winner').modal('show');
+                }
             }
         }
     }
+});
+
+function newGame() {
+    shuffleCards();
+    cards.removeClass('match');
+    moves = 0;
+    acertos = 0;
+    selectedCards = [];
+    $('.moves').text(0);
+}
+
+// restart
+$('.restart').click(function () {
+    newGame();
+});
+
+// novo jogo
+$('#new-game').click(function () {
+    newGame();
 });
