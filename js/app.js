@@ -1,7 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
-
+let card = $('.card');
 
 
  /*
@@ -25,6 +25,14 @@ function shuffle(array) {
 
     return array;
 }
+
+// embaralhando cartões e adicionando ao html.
+function shuffleCards() {
+    shuffle(cards);
+    $('.deck').html(cards);
+}
+
+shuffleCards();
 
 
 /*
