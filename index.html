@@ -2,104 +2,114 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Matching Game</title>
-    <meta name="description" content="">
-    <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-    <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/app.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+  <meta charset="utf-8">
+  <title>Matching Game</title>
+  <meta name="description" content="">
+  <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <h1>Matching Game</h1>
-        </header>
+  <div class="container">
+    <header>
+      <h1>Matching Game</h1>
+    </header>
 
-        <section class="score-panel">
-            <ul class="stars">
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star"></i></li>
-            </ul>
-
-            <span class="moves">0</span> Moves
-
-            <div class="restart">
-                <i class="fa fa-repeat"></i>
-            </div>
-        </section>
-
-        <ul class="deck">
-            <li class="card">
-                <i class="fa fa-diamond"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-paper-plane-o"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-anchor"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-bolt"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-cube"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-anchor"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-leaf"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-bicycle"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-diamond"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-bomb"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-leaf"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-bomb"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-bolt"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-bicycle"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-paper-plane-o"></i>
-            </li>
-            <li class="card">
-                <i class="fa fa-cube"></i>
-            </li>
+    <section class="score-panel">
+      <div class="moves-panel">
+        <ul class="stars">
+          <li><i class="fa fa-star"></i></li>
+          <li><i class="fa fa-star"></i></li>
+          <li><i class="fa fa-star"></i></li>
         </ul>
-    </div>
+        <span class="moves">0</span> Moves
+      </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="winner" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h1 text-muted text-center>Parabéns! Você Ganhou!</h1>
-                    <p class="score-final"></p>
-                    <p>Uhullllllllll!</p>
-                    <button id="new-game" type="button" class="btn btn-success" data-dismiss="modal">Jogue novamente!</button>
-                </div>
-            </div>
+      <div class='timer-panel'>
+          Timer: <span class="timer">00:00</span>
+      </div>
+
+      <div class="restart">
+        <i class="fa fa-repeat"></i>
+      </div>
+    </section>
+
+    <ul class="deck">
+      <li class="card">
+        <i class="fa fa-diamond"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-paper-plane-o"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-anchor"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-bolt"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-cube"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-anchor"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-leaf"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-bicycle"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-diamond"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-bomb"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-leaf"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-bomb"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-bolt"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-bicycle"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-paper-plane-o"></i>
+      </li>
+      <li class="card">
+        <i class="fa fa-cube"></i>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="winner" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          <h1 text-muted text-center>Parabéns! Você Ganhou!</h1>
+          <p class="score-final"></p>
+          <p>Uhullllllllll!</p>
+          <button id="new-game" type="button" class="btn btn-success" data-dismiss="modal">Jogue novamente!</button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script src="js/app.js"></script>
+  <script src="js/app.js"></script>
 </body>
 
 </html>

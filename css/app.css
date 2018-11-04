@@ -86,7 +86,9 @@ h1 {
  */
 
 .score-panel {
-    text-align: left;
+  display: flex;
+    justify-content: space-around;
+    align-items: center;
     width: 345px;
     margin-bottom: 10px;
 }
@@ -112,14 +114,14 @@ h1 {
 @media (min-width: 576px) {
     .modal-dialog { max-width: none; }
   }
-  
+
   .modal-dialog {
     width: 100%;
     height: 100%;
     padding: 0;
     margin: 0;
   }
-  
+
   .modal-content {
     height: 100%;
   }
@@ -131,3 +133,4 @@ h1 {
     align-items: center;
     justify-content: center;
   }
+

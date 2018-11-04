@@ -13,25 +13,25 @@ let cards = $('.card');
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+  var currentIndex = array.length, temporaryValue, randomIndex;
 
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
 
-    return array;
+  return array;
 }
 
 // embaralhando cartões e adicionando ao html.
 function shuffleCards() {
-    let simbol = shuffle(cards.find('i'));
-    cards.each(function(index) {
-        $(this).html(simbol[index]);
-    });
+  let simbol = shuffle(cards.find('i'));
+  cards.each(function (index) {
+    $(this).html(simbol[index]);
+  });
 }
 
 shuffleCards();
@@ -54,49 +54,80 @@ let selectedCards = [];
 let moves = 0;
 let acertos = 0;
 
-// tratando evento de click
-cards.click(function () {
-    if ($(this).hasClass('open') == false) {
-        if ($(this).hasClass('match') == false) {
-            $(this).toggleClass('open show');
-            selectedCards.push($(this));
 
-            if (selectedCards.length == 2) {
-                if (selectedCards[0].children().attr('class') == selectedCards[1].children().attr('class')) {
-                    selectedCards[0].toggleClass('open show match');
-                    selectedCards[1].toggleClass('open show match');
-                    acertos++;
-                } else {
-                    selectedCards[0].toggleClass('open show');
-                    selectedCards[1].toggleClass('open show');
-                }
-                moves++;
-                $('.moves').text(moves);
-                selectedCards = [];
-                if (acertos == 8) {
-                    $('.score-final').text("With " + moves + " Moves and 1 Star");
-                    $('#winner').modal('show');
-                }
-            }
+// tratando evento de click dos cartões
+cards.click(function () {
+  if ($(this).hasClass('open') == false) {
+    if ($(this).hasClass('match') == false) {
+
+      $(this).toggleClass('open show');
+      selectedCards.push($(this));
+
+      // validando cartoes
+      if (selectedCards.length == 2) {
+        if (selectedCards[0].children().attr('class') == selectedCards[1].children().attr('class')) {
+          selectedCards[0].toggleClass('open show match');
+          selectedCards[1].toggleClass('open show match');
+          acertos++;
+        } else {
+          selectedCards[0].toggleClass('open show');
+          selectedCards[1].toggleClass('open show');
         }
+        moves++;
+        $('.moves').text(moves);
+        selectedCards = [];
+
+        // Modal de vitoria
+        if (acertos == 8) {
+          stopTimer();
+          $('.score-final').text('Com ' + moves + ' Jogadas, tempo de '+$('.timer').text()+' e 1 Estrela');
+          $('#winner').modal('show');
+        }
+      }
     }
+  }
 });
 
+// acionando timer no primeiro click
+cards.click(() => {
+  if (moves == 0) {
+    timer = setInterval(startTimer, 1000);
+  }
+});
+
+
+// reset cards e score
 function newGame() {
-    shuffleCards();
-    cards.removeClass('match');
-    moves = 0;
-    acertos = 0;
-    selectedCards = [];
-    $('.moves').text(0);
+  stopTimer();
+  cards.removeClass('open show match');
+  shuffleCards();
+  moves = 0;
+  acertos = 0;
+  minutos = 0;
+  segundos = 0;
+  selectedCards = [];
+  $('.moves').text(0);
+  $('.timer').text("00:00");
 }
 
-// restart
-$('.restart').click(function () {
-    newGame();
-});
+$('#new-game, .restart').click(() => { newGame() });
 
-// novo jogo
-$('#new-game').click(function () {
-    newGame();
-});
+
+// Timer
+let minutos = 0;
+let segundos = 0;
+let timer = null;
+
+function startTimer() {
+  if (segundos < 59) {
+    segundos++;
+  } else {
+    segundos = 0;
+    minutos++
+  };
+  $('.timer').text((minutos < 10 ? "0" + minutos : minutos) + ":" + (segundos < 10 ? "0" + segundos : segundos));
+}
+
+function stopTimer() {
+  clearInterval(timer);
+}
