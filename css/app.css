@@ -101,7 +101,8 @@ h1 {
 }
 
 .score-panel .stars li {
-    list-style: none;
+
+  list-style: none;
     display: inline-block;
 }
 
@@ -109,6 +110,8 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+
 
 /* Modal */
 @media (min-width: 576px) {

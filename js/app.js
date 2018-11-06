@@ -57,7 +57,7 @@ let acertos = 0;
 
 // tratando evento de click dos cartões
 cards.click(function () {
-  if ($(this).hasClass('open') == false) {
+    if ($(this).hasClass('open') == false) {
     if ($(this).hasClass('match') == false) {
 
       $(this).toggleClass('open show');
@@ -77,10 +77,15 @@ cards.click(function () {
         $('.moves').text(moves);
         selectedCards = [];
 
+        // verificando numero de estrelas por jogaga
+        if(moves == 15 || moves == 20 || moves == 25){
+          removeStar();
+        }
+
         // Modal de vitoria
         if (acertos == 8) {
           stopTimer();
-          $('.score-final').text('Com ' + moves + ' Jogadas, tempo de '+$('.timer').text()+' e 1 Estrela');
+          $('.score-final').text('Com ' + moves + ' Jogadas, tempo de '+$('.timer').text()+' e '+$("i.fa.fa-star").length+' Estrela');
           $('#winner').modal('show');
         }
       }
@@ -95,8 +100,7 @@ cards.click(() => {
   }
 });
 
-
-// reset cards e score
+// reset cards, timer e score
 function newGame() {
   stopTimer();
   cards.removeClass('open show match');
@@ -108,6 +112,7 @@ function newGame() {
   selectedCards = [];
   $('.moves').text(0);
   $('.timer').text("00:00");
+  resetStar();
 }
 
 $('#new-game, .restart').click(() => { newGame() });
@@ -131,3 +136,13 @@ function startTimer() {
 function stopTimer() {
   clearInterval(timer);
 }
+
+// Stars
+function removeStar() {
+  $("i.fa.fa-star").last().toggleClass("fa fa-star far fa-star")
+}
+
+function resetStar() {
+  $("i.far.fa-star").toggleClass("fa fa-star far fa-star")
+}
+
