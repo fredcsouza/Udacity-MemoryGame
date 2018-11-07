@@ -52,41 +52,43 @@ shuffleCards();
 
 let selectedCards = [];
 let moves = 0;
-let acertos = 0;
-
 
 // tratando evento de click dos cartões
 cards.click(function () {
-    if ($(this).hasClass('open') == false) {
+  if ($(this).hasClass('open') == false) {
     if ($(this).hasClass('match') == false) {
+      if (selectedCards.length < 2) {
 
-      $(this).toggleClass('open show');
-      selectedCards.push($(this));
-
-      // validando cartoes
-      if (selectedCards.length == 2) {
-        if (selectedCards[0].children().attr('class') == selectedCards[1].children().attr('class')) {
-          selectedCards[0].toggleClass('open show match');
-          selectedCards[1].toggleClass('open show match');
-          acertos++;
-        } else {
-          selectedCards[0].toggleClass('open show');
-          selectedCards[1].toggleClass('open show');
-        }
+        $(this).toggleClass('open show');
+        selectedCards.push($(this));
         moves++;
         $('.moves').text(moves);
-        selectedCards = [];
 
-        // verificando numero de estrelas por jogaga
-        if(moves == 15 || moves == 20 || moves == 25){
-          removeStar();
-        }
+        // validando cartoes
+        if (selectedCards.length == 2) {
+          setTimeout(() => {
+            if (selectedCards[0].children().attr('class') == selectedCards[1].children().attr('class')) {
+              selectedCards[0].toggleClass('open show match');
+              selectedCards[1].toggleClass('open show match');
+            } else {
+              selectedCards[0].toggleClass('open show');
+              selectedCards[1].toggleClass('open show');
+            }
+            selectedCards = [];
+          }, 1000);
 
-        // Modal de vitoria
-        if (acertos == 8) {
-          stopTimer();
-          $('.score-final').text('Com ' + moves + ' Jogadas, tempo de '+$('.timer').text()+' e '+$("i.fa.fa-star").length+' Estrela');
-          $('#winner').modal('show');
+
+          // verificando numero de estrelas por jogaga
+          if (moves == 15 || moves == 20 || moves == 25) {
+            removeStar();
+          }
+
+          // Modal de vitoria
+          if ($('.card.match').length == 16) {
+            stopTimer();
+            $('.score-final').text('Com ' + moves + ' Jogadas, tempo de ' + $('.timer').text() + ' e ' + $("i.fa.fa-star").length + ' Estrela');
+            $('#winner').modal('show');
+          }
         }
       }
     }
@@ -94,7 +96,7 @@ cards.click(function () {
 });
 
 // acionando timer no primeiro click
-cards.click(() => {
+cards.click(function () {
   if (moves == 0) {
     timer = setInterval(startTimer, 1000);
   }
@@ -103,20 +105,18 @@ cards.click(() => {
 // reset cards, timer e score
 function newGame() {
   stopTimer();
+  resetStar();
   cards.removeClass('open show match');
-  shuffleCards();
   moves = 0;
-  acertos = 0;
   minutos = 0;
   segundos = 0;
   selectedCards = [];
   $('.moves').text(0);
   $('.timer').text("00:00");
-  resetStar();
+  shuffleCards();
 }
 
 $('#new-game, .restart').click(() => { newGame() });
-
 
 // Timer
 let minutos = 0;
