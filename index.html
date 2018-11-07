@@ -33,7 +33,7 @@
       </div>
 
       <div class='timer-panel'>
-          Timer: <span class="timer">00:00</span>
+        Timer: <span class="timer">00:00</span>
       </div>
 
       <div class="restart">
@@ -98,15 +98,32 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close display-3" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <h1 text-muted text-center>Parabéns! Você Ganhou!</h1>
-          <p class="score-final"></p>
-          <p>Uhullllllllll!</p>
-          <button id="new-game" type="button" class="btn btn-success" data-dismiss="modal">Jogue novamente!</button>
+        <div class="modal-body text-center">
+          <h1 class="win-title text-muted">Parabéns! Você Ganhou!</h1>
+
+            <table class="table text-center col-md-5">
+              <thead class="table-head">
+                <tr>
+                  <th scope="col">Jogadas</th>
+                  <th scope="col">Tempo</th>
+                  <th scope="col">Estrelas</th>
+                </tr>
+              </thead>
+              <tbody class="table-body">
+                <tr>
+                  <td>10</td>
+                  <td>00:00</td>
+                  <td>3</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>Uhullllllllll!</p>
+            <button id="new-game" type="button" class="btn btn-success" data-dismiss="modal">Jogue novamente!</button>
         </div>
       </div>
     </div>

@@ -53,6 +53,8 @@ shuffleCards();
 let selectedCards = [];
 let moves = 0;
 
+
+
 // tratando evento de click dos cartões
 cards.click(function () {
   if ($(this).hasClass('open') == false) {
@@ -61,8 +63,6 @@ cards.click(function () {
 
         $(this).toggleClass('open show');
         selectedCards.push($(this));
-        moves++;
-        $('.moves').text(moves);
 
         // validando cartoes
         if (selectedCards.length == 2) {
@@ -75,19 +75,21 @@ cards.click(function () {
               selectedCards[1].toggleClass('open show');
             }
             selectedCards = [];
+
+            // Modal de vitoria
+            if ($('.card.match').length == 16) {
+              stopTimer();
+              $('.table-body td').eq(0).text(moves);
+              $('.table-body td').eq(1).text($('.timer').text());
+              $('.table-body td').eq(2).text($("i.fa.fa-star").length);
+              $('#winner').modal('show');
+            }
           }, 1000);
-
-
-          // verificando numero de estrelas por jogaga
+          moves++;
+          $('.moves').text(moves);
+          // verificando numero de estrelas por jogada
           if (moves == 15 || moves == 20 || moves == 25) {
             removeStar();
-          }
-
-          // Modal de vitoria
-          if ($('.card.match').length == 16) {
-            stopTimer();
-            $('.score-final').text('Com ' + moves + ' Jogadas, tempo de ' + $('.timer').text() + ' e ' + $("i.fa.fa-star").length + ' Estrela');
-            $('#winner').modal('show');
           }
         }
       }
@@ -95,7 +97,8 @@ cards.click(function () {
   }
 });
 
-// acionando timer no primeiro click
+
+// iniciando timer no primeiro click
 cards.click(function () {
   if (moves == 0) {
     timer = setInterval(startTimer, 1000);
@@ -145,4 +148,4 @@ function removeStar() {
 function resetStar() {
   $("i.far.fa-star").toggleClass("fa fa-star far fa-star")
 }
-
+$('#winner').modal('show');
