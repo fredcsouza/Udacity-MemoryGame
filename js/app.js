@@ -48,104 +48,130 @@ shuffleCards();
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+// Objeto contendo todo os dados do score
+let score = {
+  moves: 0,
+  minutos: 0,
+  segundos: 0,
+  timer: null,
 
+  //timer
+  startTimer() {
+    this.timer = setInterval(() => {
+      if (this.segundos < 59) {
+        this.segundos++;
+      } else {
+        this.segundos = 0;
+        this.minutos++
+      };
+      $('.timer').text((this.minutos < 10 ? "0" + this.minutos : this.minutos) + ":" + (this.segundos < 10 ? "0" + this.segundos : this.segundos));
+    }, 1000);
+  },
 
-let selectedCards = [];
-let moves = 0;
+  // stars
+  checkStars() {
+    if (this.getMoves() == 15 || this.getMoves() == 20 || this.getMoves() == 25) {
+      $("i.fa.fa-star").last().toggleClass("fa fa-star far fa-star");
+    }
+  },
+  stopTimer() {
+    clearInterval(this.timer);
+  },
 
+  // moves
+  addMove() {
+    this.moves += 1;
+  },
+  showMoves() {
+    $('.moves').text(this.moves / 2);
+  },
+  getMoves() {
+    return this.moves / 2;
+  },
 
+  // clear
+  clearScore() {
+    this.moves = 0;
+    this.minutos = 0;
+    this.segundos = 0;
+    $("i.far.fa-star").toggleClass("fa fa-star far fa-star");
+    this.stopTimer();
+  }
+}
+
+// Objeto de cartas selecionadas
+let game = {
+  selectedCards: [],
+  numberOfSelecteds() {
+    return this.selectedCards.length;
+  },
+
+  addSelectCard(card) {
+    this.selectedCards.push(card);
+  },
+
+  checkEquals() {
+    setTimeout(() => {
+      if (this.selectedCards[0].children().attr('class') == this.selectedCards[1].children().attr('class')) {
+        $(this.selectedCards).toggleClass('open show match');
+      } else {
+        $(this.selectedCards).toggleClass('show open');
+      }
+      won();
+      this.selectedCards = [];
+    }, 800);
+  },
+
+  clearCards() {
+    this.selectedCards = [];
+    cards.removeClass('open show match');
+  }
+}
 
 // tratando evento de click dos cartões
 cards.click(function () {
+  // iniciando timer
+  if (score.getMoves() == 0) {
+    score.startTimer();
+  }
+
+  // bloqueando click em cartas abertas
   if ($(this).hasClass('open') == false) {
     if ($(this).hasClass('match') == false) {
-      if (selectedCards.length < 2) {
-
+      if (game.numberOfSelecteds() < 2) {
         $(this).toggleClass('open show');
-        selectedCards.push($(this));
+        game.addSelectCard($(this));
+        score.addMove();
 
-        // validando cartoes
-        if (selectedCards.length == 2) {
-          setTimeout(() => {
-            if (selectedCards[0].children().attr('class') == selectedCards[1].children().attr('class')) {
-              selectedCards[0].toggleClass('open show match');
-              selectedCards[1].toggleClass('open show match');
-            } else {
-              selectedCards[0].toggleClass('open show');
-              selectedCards[1].toggleClass('open show');
-            }
-            selectedCards = [];
-
-            // Modal de vitoria
-            if ($('.card.match').length == 16) {
-              stopTimer();
-              $('.table-body td').eq(0).text(moves);
-              $('.table-body td').eq(1).text($('.timer').text());
-              $('.table-body td').eq(2).text($("i.fa.fa-star").length);
-              $('#winner').modal('show');
-            }
-          }, 1000);
-          moves++;
-          $('.moves').text(moves);
-          // verificando numero de estrelas por jogada
-          if (moves == 15 || moves == 20 || moves == 25) {
-            removeStar();
-          }
+        // vlidando cartoes
+        if (game.numberOfSelecteds() == 2) {
+          game.checkEquals();
+          score.showMoves();
+          score.checkStars();
         }
       }
     }
   }
 });
 
-
-// iniciando timer no primeiro click
-cards.click(function () {
-  if (moves == 0) {
-    timer = setInterval(startTimer, 1000);
+// Modal de vitoria
+function won() {
+  if ($('.card.match').length == 16) {
+    $('.table-body td').eq(0).text(score.getMoves());
+    $('.table-body td').eq(1).text($('.timer').text());
+    $('.table-body td').eq(2).text($("i.fa.fa-star").length);
+    $('#winner').modal('show');
   }
-});
+}
 
 // reset cards, timer e score
 function newGame() {
-  stopTimer();
-  resetStar();
-  cards.removeClass('open show match');
-  moves = 0;
-  minutos = 0;
-  segundos = 0;
-  selectedCards = [];
+  score.clearScore();
+  game.clearCards();
   $('.moves').text(0);
   $('.timer').text("00:00");
   shuffleCards();
 }
 
+// tratando evento de restart e novo jogo
 $('#new-game, .restart').click(() => { newGame() });
-
-// Timer
-let minutos = 0;
-let segundos = 0;
-let timer = null;
-
-function startTimer() {
-  if (segundos < 59) {
-    segundos++;
-  } else {
-    segundos = 0;
-    minutos++
-  };
-  $('.timer').text((minutos < 10 ? "0" + minutos : minutos) + ":" + (segundos < 10 ? "0" + segundos : segundos));
-}
-
-function stopTimer() {
-  clearInterval(timer);
-}
-
-// Stars
-function removeStar() {
-  $("i.fa.fa-star").last().toggleClass("fa fa-star far fa-star")
-}
-
-function resetStar() {
-  $("i.far.fa-star").toggleClass("fa fa-star far fa-star")
-}
-$('#winner').modal('show');
