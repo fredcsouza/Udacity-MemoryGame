@@ -48,7 +48,7 @@ shuffleCards();
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-// Objeto contendo todo os dados do score
+// Objeto de score
 let score = {
   moves: 0,
   minutos: 0,
@@ -111,15 +111,23 @@ let game = {
   },
 
   checkEquals() {
-    setTimeout(() => {
       if (this.selectedCards[0].children().attr('class') == this.selectedCards[1].children().attr('class')) {
-        $(this.selectedCards).toggleClass('open show match');
+        setTimeout(() => {
+          $(this.selectedCards).toggleClass('open show match');
+          this.selectedCards = [];
+          won();
+        }, 800);
       } else {
-        $(this.selectedCards).toggleClass('show open');
+
+        setTimeout(() => {
+          $(this.selectedCards).toggleClass('open show wrong');
+        }, 800);
+        setTimeout(() => {
+          $(this.selectedCards).toggleClass('wrong');
+           this.selectedCards = [];
+        }, 1600);
       }
       won();
-      this.selectedCards = [];
-    }, 800);
   },
 
   clearCards() {
@@ -157,6 +165,7 @@ cards.click(function () {
 // Modal de vitoria
 function won() {
   if ($('.card.match').length == 16) {
+    score.stopTimer();
     $('.table-body td').eq(0).text(score.getMoves());
     $('.table-body td').eq(1).text($('.timer').text());
     $('.table-body td').eq(2).text($("i.fa.fa-star").length);
