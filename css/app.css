@@ -38,8 +38,8 @@ h1 {
  */
 
 .deck {
+    max-width: 660px;
     width: 660px;
-    min-height: 680px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
     padding: 32px;
     border-radius: 10px;
@@ -51,12 +51,14 @@ h1 {
     margin: 0 0 3em;
 }
 
+
 .deck .card {
     height: 125px;
     width: 125px;
     background: #2e3d49;
     font-size: 0;
     color: #ffffff;
+    margin:10px;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
@@ -193,5 +195,71 @@ h1 {
 
 .win-title {
   margin-bottom: 25px;
+}
+
+@media only screen and (max-width: 680px){
+  .deck {
+    padding: 10px;
+    width: 460px;
+  }
+  .deck .card  {
+    height: 90px;
+    width: 90px;
+  }
+}
+
+
+@media only screen and (max-width: 480px){
+  .container {
+    width: calc(100% - 20px);
+    margin: 0 10px;
+  }
+  .deck {
+    padding: 10px;
+    width: 340px;
+  }
+  .deck .card  {
+    height: 60px;
+    width: 60px;
+  }
+  .deck .card.show {
+    font-size: 25px;
+  }
+
+  .deck .card.match {
+    font-size: 25px;
+  }
+
+  @keyframes rotate{
+    0%, 90%{
+      background: #2e3d49;
+      font-size: 0;
+    }
+    100% {
+      transform: rotateY(90deg);
+      background: #2ca3c4;
+      font-size: 25px;
+    }
+  }
+
+  @keyframes wrong {
+    0%, 90% {
+      transform: translate3d(-2px, 0, 0);
+      background: red;
+      font-size: 25px;
+    }
+
+    20%, 80% {
+      transform: translate3d(3px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+      transform: translate3d(-5px, 0, 0);
+    }
+
+    40%, 60%, 100%{
+      transform: translate3d(5px, 0, 0);
+    }
+  }
 }
 
