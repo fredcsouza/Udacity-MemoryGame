@@ -48,37 +48,44 @@ shuffleCards();
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-// Objeto de score
-let score = {
-  moves: 0,
-  minutos: 0,
-  segundos: 0,
+// Controle do Timer
+let timer = {
+  data: new Date(),
   timer: null,
-
-  //timer
   startTimer() {
-    this.timer = setInterval(() => {
-      if (this.segundos < 59) {
-        this.segundos++;
-      } else {
-        this.segundos = 0;
-        this.minutos++
-      };
-      $('.timer').text((this.minutos < 10 ? "0" + this.minutos : this.minutos) + ":" + (this.segundos < 10 ? "0" + this.segundos : this.segundos));
-    }, 1000);
-  },
+    this.data.setMinutes(0);
+    this.data.setSeconds(0);
 
-  // stars
-  checkStars() {
-    if (this.getMoves() == 15 || this.getMoves() == 20 || this.getMoves() == 25) {
-      $("i.fa.fa-star").last().toggleClass("fa fa-star far fa-star");
-    }
+    this.timer = setInterval(() => {
+      if (this.data.getSeconds() < 59) {
+        this.data.setSeconds(this.data.getSeconds() + 1);
+      } else {
+        this.data.setSeconds(0);
+        this.data.setMinutes(this.data.getMinutes() + 1);
+      };
+      $('.timer').text(this.getFormatedTimer(this.data));
+    }, 1000);
   },
   stopTimer() {
     clearInterval(this.timer);
   },
+  getTimer() {
+    return this.data.getTime();
+  },
+  getFormatedTimer(timer) {
+    return (timer.getMinutes() < 10 ? "0" + timer.getMinutes() : timer.getMinutes()) + ":" +
+      (timer.getSeconds() < 10 ? "0" + timer.getSeconds() : timer.getSeconds());
+  },
+  clearTimer() {
+    this.stopTimer();
+    this.data.setMinutes(0);
+    this.data.setSeconds(0);
+  }
+}
 
-  // moves
+// Controle das Jogadas
+let moves = {
+  moves: 0,
   addMove() {
     this.moves += 1;
   },
@@ -88,59 +95,169 @@ let score = {
   getMoves() {
     return this.moves / 2;
   },
-
-  // clear
-  clearScore() {
+  clearMoves() {
     this.moves = 0;
-    this.minutos = 0;
-    this.segundos = 0;
-    $("i.far.fa-star").toggleClass("fa fa-star far fa-star");
-    this.stopTimer();
   }
 }
 
-// Objeto de cartas selecionadas
+// Controle das Estrelas
+let stars = {
+  checkStars() {
+    if (moves.getMoves() == 17 || moves.getMoves() == 21 || moves.getMoves() == 25) {
+      $("i.fa.fa-star").last().toggleClass("fa fa-star far fa-star");
+    }
+  },
+  clearStars() {
+    $("i.far.fa-star").toggleClass("fa fa-star far fa-star");
+  },
+  numberOfStars() {
+    return $("i.fa.fa-star").length;
+  }
+}
+
+// Controle do leaderboard
+let leaderboard = {
+  leaderboard: [],
+  set() {
+    this.get();
+    let score = [stars.numberOfStars(), moves.getMoves(), timer.getTimer()];
+    if (this.leaderboard != null) {
+      let exist = false;
+      for (element in leaderboard) {
+        if (element[0] == score[0] && element[1] == score[1] && element[2] == score[0]) {
+          exist = true;
+          break;
+        }
+      }
+      if (exist == false) {
+        this.leaderboard.push(score);
+        this.leaderboard.sort(function (a, b) {
+          return b[0] - a[0];
+        });
+        this.leaderboard.sort(function (a, b) {
+          if (a[0] == b[0]) { return a[1] - b[1] }
+        });
+        this.leaderboard.sort(function (a, b) {
+          if (a[0] == b[0] && a[1] == b[1]) { return a[2] - b[2] }
+        });
+      }
+    } else {
+      this.leaderboard = [score];
+    }
+    localStorage.setItem('leaderboard', JSON.stringify(this.leaderboard))
+  },
+  get() {
+    if (localStorage.getItem('leaderboard') != "undefined") {
+      this.leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+    }
+  },
+  showModal() {
+    $('#new-game').hide();
+    this.get();
+    table.setTitle('Leaderboard');
+    if (this.leaderboard != null) {
+      table.setElements(this.leaderboard);
+    }
+    table.show();
+  }
+}
+
+// controle de cartas
 let game = {
   selectedCards: [],
   numberOfSelecteds() {
     return this.selectedCards.length;
   },
-
   addSelectCard(card) {
     this.selectedCards.push(card);
   },
-
   checkEquals() {
-      if (this.selectedCards[0].children().attr('class') == this.selectedCards[1].children().attr('class')) {
-        setTimeout(() => {
-          $(this.selectedCards).toggleClass('open show match');
-          this.selectedCards = [];
-          won();
-        }, 800);
-      } else {
-
-        setTimeout(() => {
-          $(this.selectedCards).toggleClass('open show wrong');
-        }, 800);
-        setTimeout(() => {
-          $(this.selectedCards).toggleClass('wrong');
-           this.selectedCards = [];
-        }, 1600);
-      }
-      won();
+    if (this.selectedCards[0].children().attr('class') == this.selectedCards[1].children().attr('class')) {
+      setTimeout(() => {
+        $(this.selectedCards).toggleClass('open show match');
+        this.selectedCards = [];
+        modalVitoria();
+      }, 800);
+    } else {
+      setTimeout(() => {
+        $(this.selectedCards).toggleClass('open show wrong');
+      }, 800);
+      setTimeout(() => {
+        $(this.selectedCards).toggleClass('wrong');
+        this.selectedCards = [];
+      }, 1600);
+    }
+    modalVitoria();
   },
-
   clearCards() {
     this.selectedCards = [];
     cards.removeClass('open show match');
   }
 }
 
-// tratando evento de click dos cartões
+// Controla tabela do Modal
+let table = {
+  setTitle(title) {
+    $('.modal-title').text(title);
+  },
+  setElement(element) {
+    $(".table-body tr").remove();
+    let tr = $('<tr>');
+    for (let i = 0; i < element.length; i++) {
+      $(tr).append('<td>' + element[i] + '</td>');
+    }
+    $(".table-body").append($(tr));
+  },
+  setElements(elements) {
+    let array = elements;
+    let data = new Date();
+    array.forEach(element => {
+      data.setTime(element[2]);
+      element[2] = timer.getFormatedTimer(data);
+    });
+    $(".table-body tr").remove();
+    for (let i = 0; i < array.length; i++) {
+      let tr = $('<tr>');
+      for (let j = 0; j < array[i].length; j++) {
+        $(tr).append('<td>' + array[i][j] + '</td>');
+      }
+      $(".table-body").append($(tr));
+    }
+  },
+  show() {
+    $('#modal').modal('show');
+  }
+}
+
+// Modal de vitoria
+function modalVitoria() {
+  if ($('.card.match').length == 16) {
+    $('#new-game').show();
+    timer.stopTimer();
+    leaderboard.set();
+    table.setTitle("Parabéns! Você Ganhou!");
+    table.setElement([stars.numberOfStars(), moves.getMoves(), timer.getFormatedTimer(timer.data)]);
+    table.show();
+  }
+}
+
+// reset cards, timer e score
+function newGame() {
+  timer.clearTimer();
+  moves.clearMoves();
+  stars.clearStars();
+  game.clearCards();
+  $('.moves').text(0);
+  $('.timer').text("00:00");
+  shuffleCards();
+}
+
+/* Tratando eventos */
+
+// Cartões
 cards.click(function () {
-  // iniciando timer
-  if (score.getMoves() == 0) {
-    score.startTimer();
+  if (moves.getMoves() == 0) {
+    timer.startTimer();
   }
 
   // bloqueando click em cartas abertas
@@ -149,38 +266,24 @@ cards.click(function () {
       if (game.numberOfSelecteds() < 2) {
         $(this).toggleClass('open show');
         game.addSelectCard($(this));
-        score.addMove();
+        moves.addMove();
 
         // vlidando cartoes
         if (game.numberOfSelecteds() == 2) {
           game.checkEquals();
-          score.showMoves();
-          score.checkStars();
+          moves.showMoves();
+          stars.checkStars();
         }
       }
     }
   }
 });
 
-// Modal de vitoria
-function won() {
-  if ($('.card.match').length == 16) {
-    score.stopTimer();
-    $('.table-body td').eq(0).text(score.getMoves());
-    $('.table-body td').eq(1).text($('.timer').text());
-    $('.table-body td').eq(2).text($("i.fa.fa-star").length);
-    $('#winner').modal('show');
-  }
-}
-
-// reset cards, timer e score
-function newGame() {
-  score.clearScore();
-  game.clearCards();
-  $('.moves').text(0);
-  $('.timer').text("00:00");
-  shuffleCards();
-}
-
-// tratando evento de restart e novo jogo
+// restart e novo jogo
 $('#new-game, .restart').click(() => { newGame() });
+
+// atalho para reset do jogo
+$('body').keypress((e) => { if (e.keyCode == 82 && e.shiftKey) { newGame() } });
+
+// leaderboard
+$('.leaderboard').click(() => { leaderboard.showModal() });
