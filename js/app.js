@@ -141,6 +141,9 @@ let leaderboard = {
           if (a[0] == b[0] && a[1] == b[1]) { return a[2] - b[2] }
         });
       }
+      if (this.leaderboard.length > 10) {
+        this.leaderboard.splice(10, 1);
+      }
     } else {
       this.leaderboard = [score];
     }
@@ -151,18 +154,51 @@ let leaderboard = {
       this.leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
     }
   },
+  clear() {
+    this.leaderboard = [];
+    localStorage.removeItem('leaderboard');
+  },
   showModal() {
-    $('#new-game').hide();
+    modal.hideElement('.modal-info', true);
+    modal.hideElement('.modal-score', false);
+    modal.hideElement('.new-game', true);
+    modal.hideElement('.clear-score', false);
+
     this.get();
-    table.setTitle('Leaderboard');
+    modal.setTitle('Leaderboard');
     if (this.leaderboard != null) {
-      table.setElements(this.leaderboard);
+      modal.setTableElements(this.leaderboard);
     }
-    table.show();
+    modal.show();
   }
 }
 
-// controle de cartas
+// checando cartas e iniciando timer
+function checkCards() {
+  if (moves.getMoves() == 0) {
+    timer.startTimer();
+  }
+
+  // bloqueando click em cartas abertas
+  if ($(this).hasClass('open') == false) {
+    if ($(this).hasClass('match') == false) {
+      if (game.numberOfSelecteds() < 2) {
+        $(this).toggleClass('open show');
+        game.addSelectCard($(this));
+        moves.addMove();
+
+        // vlidando cartoes
+        if (game.numberOfSelecteds() == 2) {
+          game.checkEquals();
+          moves.showMoves();
+          stars.checkStars();
+        }
+      }
+    }
+  }
+}
+
+// controle do jogo
 let game = {
   selectedCards: [],
   numberOfSelecteds() {
@@ -195,27 +231,29 @@ let game = {
   }
 }
 
-// Controla tabela do Modal
-let table = {
+// Modal
+let modal = {
   setTitle(title) {
     $('.modal-title').text(title);
   },
-  setElement(element) {
-    $(".table-body tr").remove();
+
+  setTableElement(element) {
+    this.removeTableElements();
     let tr = $('<tr>');
     for (let i = 0; i < element.length; i++) {
       $(tr).append('<td>' + element[i] + '</td>');
     }
     $(".table-body").append($(tr));
   },
-  setElements(elements) {
+
+  setTableElements(elements) {
     let array = elements;
     let data = new Date();
     array.forEach(element => {
       data.setTime(element[2]);
       element[2] = timer.getFormatedTimer(data);
     });
-    $(".table-body tr").remove();
+    this.removeTableElements();
     for (let i = 0; i < array.length; i++) {
       let tr = $('<tr>');
       for (let j = 0; j < array[i].length; j++) {
@@ -223,6 +261,12 @@ let table = {
       }
       $(".table-body").append($(tr));
     }
+  },
+  removeTableElements() {
+    $('.table-body tr').remove();
+  },
+  hideElement(element, value) {
+    (value ? $('.modal-body ' + element).hide() : $('.modal-body ' + element).show())
   },
   show() {
     $('#modal').modal('show');
@@ -235,10 +279,24 @@ function modalVitoria() {
     $('#new-game').show();
     timer.stopTimer();
     leaderboard.set();
-    table.setTitle("Parabéns! Você Ganhou!");
-    table.setElement([stars.numberOfStars(), moves.getMoves(), timer.getFormatedTimer(timer.data)]);
-    table.show();
+    modal.setTitle("Parabéns! Você Ganhou!");
+    modal.setTableElement([stars.numberOfStars(), moves.getMoves(), timer.getFormatedTimer(timer.data)]);
+    modal.show();
   }
+}
+
+// Modal informações
+function info() {
+  modal.setTitle("Informações");
+  modal.hideElement('.modal-info', false);
+  modal.hideElement('.modal-score', true);
+  modal.show();
+}
+
+// Limpar Tabela leaderboard
+function clearScore() {
+  leaderboard.clear();
+  modal.removeTableElements();
 }
 
 // reset cards, timer e score
@@ -255,35 +313,19 @@ function newGame() {
 /* Tratando eventos */
 
 // Cartões
-cards.click(function () {
-  if (moves.getMoves() == 0) {
-    timer.startTimer();
-  }
-
-  // bloqueando click em cartas abertas
-  if ($(this).hasClass('open') == false) {
-    if ($(this).hasClass('match') == false) {
-      if (game.numberOfSelecteds() < 2) {
-        $(this).toggleClass('open show');
-        game.addSelectCard($(this));
-        moves.addMove();
-
-        // vlidando cartoes
-        if (game.numberOfSelecteds() == 2) {
-          game.checkEquals();
-          moves.showMoves();
-          stars.checkStars();
-        }
-      }
-    }
-  }
-});
+cards.click(checkCards);
 
 // restart e novo jogo
-$('#new-game, .restart').click(() => { newGame() });
+$('#new-game, .restart').click(newGame);
 
 // atalho para reset do jogo
 $('body').keypress((e) => { if (e.keyCode == 82 && e.shiftKey) { newGame() } });
 
 // leaderboard
 $('.leaderboard').click(() => { leaderboard.showModal() });
+
+// info
+$('.info').click(info);
+
+// clear leaderboard
+$('.clear-score').click(clearScore)

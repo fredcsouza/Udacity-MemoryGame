@@ -108,23 +108,45 @@
         <div class="modal-body text-center">
           <h1 class="modal-title text-muted"></h1>
 
-          <table class="table text-center col-md-5">
-            <thead class="table-head">
-              <tr>
-                <th scope="col">Estrelas</th>
-                <th scope="col">Jogadas</th>
-                <th scope="col">Tempo</th>
-              </tr>
-            </thead>
-            <tbody class="table-body">
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <button id="new-game" type="button" class="btn btn-success" data-dismiss="modal">Jogue novamente!</button>
+          <!-- Informações -->
+          <div class="modal-info">
+            <h4>Estrelas</h4>
+            <p>3 estrelas: até 16 jogadas</p>
+            <p>2 estrelas: 17 até 20 jogadas</p>
+            <p>1 estrelas: 21 até 24 jogadas</p>
+            <p>0 estrelas: acima de 24 jogadas</p>
+            <h4>Jogadas:</h4>
+            <p>O numero de jogadas e marcado ao lado das estrelas</p>
+            <h4>Timer:</h4>
+            <p>O timer mostra o tempo gasto para finalizar o jogo</p>
+            <h4>Leaderboard:</h4>
+            <p>Leaderboard mostra o placar ordenado primeiro pelo numero de estrelas seguido pelo numero de jogadas e por ultimo o tempo gasto.</p>
+            <h4>Atalhos:</h4>
+            <p>Use as teclas 'shift + S' para resetar o jogo.</p>
+          </div>
+
+          <!-- score -->
+          <div class="modal-score">
+            <table class="table text-center col-md-5">
+              <thead class="table-head">
+                <tr>
+                  <th scope="col">Estrelas</th>
+                  <th scope="col">Jogadas</th>
+                  <th scope="col">Tempo</th>
+                </tr>
+              </thead>
+              <tbody class="table-body">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="btn btn-success new-game" type="button" data-dismiss="modal">Jogue novamente!</button>
+            <button class="btn btn-danger clear-score" type="button" data-dismiss="modal">Limpar Score!</button>
+          </div>
+
         </div>
       </div>
     </div>
