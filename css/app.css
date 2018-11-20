@@ -241,6 +241,11 @@ h1 {
     font-size: 25px;
   }
 
+  .modal-body {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
   @keyframes rotate{
     0%, 90%{
       background: #2e3d49;

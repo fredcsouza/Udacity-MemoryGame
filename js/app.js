@@ -276,7 +276,10 @@ let modal = {
 // Modal de vitoria
 function modalVitoria() {
   if ($('.card.match').length == 16) {
-    $('#new-game').show();
+    modal.hideElement('.modal-info', true);
+    modal.hideElement('.modal-score', false);
+    modal.hideElement('.new-game', false);
+    modal.hideElement('.clear-score', true);
     timer.stopTimer();
     leaderboard.set();
     modal.setTitle("Parabéns! Você Ganhou!");
