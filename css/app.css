@@ -16,8 +16,9 @@ body {
     padding: 0;
 }
 
+/* Background pattern from Subtle Patterns */
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    background: #ffffff url('../img/geometry2.png');
     font-family: 'Coda', cursive;
 }
 
@@ -50,7 +51,6 @@ h1 {
     align-items: center;
     margin: 0 0 3em;
 }
-
 
 .deck .card {
     height: 125px;
@@ -91,7 +91,7 @@ h1 {
     animation: wrong 1s;
 }
 
-@keyframes rotate{
+@keyframes rotate {
   0%, 90%{
     background: #2e3d49;
     font-size: 0;
@@ -103,7 +103,7 @@ h1 {
   }
 }
 
-@keyframes match{
+@keyframes match {
   0%, 70% {
     transform: rotateX(0);
   }
@@ -181,7 +181,7 @@ h1 {
 .modal-content {
   height: 100%;
 }
-.modal-header{
+.modal-header {
   border-bottom: 0;
 }
 
@@ -208,7 +208,7 @@ h1 {
 }
 
 
-@media only screen and (max-width: 680px){
+@media only screen and (max-width: 680px) {
   .deck {
     padding: 10px;
     width: 460px;
@@ -219,8 +219,7 @@ h1 {
   }
 }
 
-
-@media only screen and (max-width: 480px){
+@media only screen and (max-width: 480px) {
   .container {
     width: calc(100% - 20px);
     margin: 0 10px;
@@ -236,17 +235,15 @@ h1 {
   .deck .card.show {
     font-size: 25px;
   }
-
   .deck .card.match {
     font-size: 25px;
   }
-
   .modal-body {
     flex-direction: row;
     flex-wrap: wrap;
   }
 
-  @keyframes rotate{
+  @keyframes rotate {
     0%, 90%{
       background: #2e3d49;
       font-size: 0;
@@ -273,7 +270,7 @@ h1 {
       transform: translate3d(-5px, 0, 0);
     }
 
-    40%, 60%, 100%{
+    40%, 60%, 100% {
       transform: translate3d(5px, 0, 0);
     }
   }
