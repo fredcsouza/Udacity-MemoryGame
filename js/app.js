@@ -234,7 +234,7 @@ let game = {
 // Modal
 let modal = {
   setTitle(title) {
-    $('.modal-title').text(title);
+    $('.title-modal').text(title);
   },
 
   setTableElement(element) {
@@ -293,6 +293,8 @@ function info() {
   modal.setTitle("Informações");
   modal.hideElement('.modal-info', false);
   modal.hideElement('.modal-score', true);
+  modal.hideElement('.new-game', true);
+  modal.hideElement('.clear-score', true);
   modal.show();
 }
 

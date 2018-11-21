@@ -168,8 +168,10 @@ h1 {
 
 /* Modal */
 @media (min-width: 576px) {
-    .modal-dialog { max-width: none; }
+  .modal-dialog {
+    max-width: none;
   }
+}
 
 .modal-dialog {
   width: 100%;
@@ -181,9 +183,6 @@ h1 {
 .modal-content {
   height: 100%;
 }
-.modal-header {
-  border-bottom: 0;
-}
 
 .modal-body {
   display: flex;
@@ -193,20 +192,14 @@ h1 {
   overflow-y: auto;
 }
 
-.modal-title {
-  margin-bottom: 25px;
-}
-
-.close {
-  font-size: 50px;
+.title-modal {
+  text-align: center;
 }
 
 .modal-info {
   max-width: 600px;
   margin: 15px;
-
 }
-
 
 @media only screen and (max-width: 680px) {
   .deck {
