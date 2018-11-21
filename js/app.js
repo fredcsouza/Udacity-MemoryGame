@@ -319,7 +319,8 @@ function newGame() {
 cards.click(checkCards);
 
 // restart e novo jogo
-$('#new-game, .restart').click(newGame);
+$('.restart').click(newGame);
+$('.modal .new-game').click(newGame);
 
 // atalho para reset do jogo
 $('body').keypress((e) => { if (e.keyCode == 82 && e.shiftKey) { newGame() } });
