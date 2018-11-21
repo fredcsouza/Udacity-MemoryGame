@@ -1,20 +1,34 @@
-# Memory Game Project
+# Jogo da Memória
 
-## Table of Contents
+## Index
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+* [Instalação](#instalação)
+* [Instruções](#instruções)
+* [Score](#score)
+* [Leaderboard](#leaderboard)
+* [Atalhos](#atalhos)
 
-## Instructions
+## Instalação
+1. Baixe o arquivo no link [jogo da memória](https://github.com/fredcsouza/Udacity-MemoryGame/archive/master.zip).
+2. Descompacte e execute o arquivo index.html.
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+## Instruções 
+O jogo inicia com todas as cartas viradas de costas,  ao clicar será virada mostando seu simbolo, o jogador pode selecionar um máximo de duas cartas por vez, caso as cartas forem iguais irão se manter viradas na cor verde e se forem erradas mostrará um efeito na cor vermelha e retoranarão a virar se escondendo. O jogo termina quando todos os pares forem encontrados.
 
-To get started, open `js/app.js` and start building out the app's functionality
+## Score
+Ao clicar na primeira carta um timer e iniciado, a cada duas cartas e somado uma jogada ao placar.
+  - 3 estrelas até 16 jogadas.
+  - 2 estrelas de 17 a 20 jogadas.
+  - 1 estrelas de 21 a 24 jogadas.
+  - 0 estrelas acima de 24 jogadas. 
+  
+## Leaderboard
+Leaderboard guarda os ultimos 10 melhores resultados, sedo utilizado os parametros:
+1. Número de estrelas.
+2. Número de jogadas.
+3. Tempo gasto para finalizar o jogo.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+Quanto mais estrelas, menos jogadas e tempo gasto mais alta será sua posição na leaderboard.
 
-## Contributing
-
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+## Atalhos
+Também é possivel reiniciar o jogo com o atalho  `Shift + R`.
